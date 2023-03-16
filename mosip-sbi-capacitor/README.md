@@ -1,11 +1,11 @@
-# mosip-sbi-capacitor
+# mosip-sbi-capacitor-plugin
 
 Capacitor plugin to use Android Intent with SBI
 
 ## Install
 
 ```bash
-npm install mosip-sbi-capacitor
+npm install mosip-sbi-capacitor-plugin
 npx cap sync
 ```
 

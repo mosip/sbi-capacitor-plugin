@@ -1,6 +1,6 @@
 {
-  "name": "mosip-sbi-capacitor",
-  "version": "1.0.0",
+  "name": "mosip-sbi-capacitor-plugin",
+  "version": "1.0.4",
   "description": "Capacitor plugin to use Android Intent with SBI",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -11,7 +11,7 @@
     "android/build.gradle",
     "dist/",
     "ios/Plugin/",
-    "MosipSbiCapacitor.podspec"
+    "MosipSbiCapacitorPlugin.podspec"
   ],
   "author": "Mayura Deshmukh",
   "license": "MPL 2.0",
@@ -25,6 +25,7 @@
   "keywords": [
     "capacitor",
     "plugin",
+    "sbi",
     "native"
   ],
   "scripts": {

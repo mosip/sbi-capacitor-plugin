@@ -1,9 +1,9 @@
 import { registerPlugin } from '@capacitor/core';
 
-import type { MosipSbiCapacitorPlugin } from './definitions';
+import type { MosipSbiCapacitor } from './definitions';
 
-const MosipSbiCapacitor = registerPlugin<MosipSbiCapacitorPlugin>('MosipSbiCapacitor', {
+const MosipSbiCapacitorPlugin = registerPlugin<MosipSbiCapacitor>('MosipSbiCapacitorPlugin', {
 });
 
 export * from './definitions';
-export { MosipSbiCapacitor };
+export { MosipSbiCapacitorPlugin };

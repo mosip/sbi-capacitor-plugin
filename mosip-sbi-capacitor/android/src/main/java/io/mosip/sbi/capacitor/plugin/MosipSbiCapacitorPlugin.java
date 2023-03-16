@@ -36,7 +36,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Base64;
 
-@CapacitorPlugin(name = "MosipSbiCapacitor")
+@CapacitorPlugin(name = "MosipSbiCapacitorPlugin")
 public class MosipSbiCapacitorPlugin extends Plugin {
 
     public static final String LOG_TAG = "MosipSbiCapacitorPlugin";

@@ -5,7 +5,7 @@ export interface CapacitorIntentOptions {
   requestKey?: string;
   requestValue?: string;    
 }
-export interface MosipSbiCapacitorPlugin {
+export interface MosipSbiCapacitor {
   pluginName: string;
   startActivity(options: CapacitorIntentOptions): Promise<void>;
 }
