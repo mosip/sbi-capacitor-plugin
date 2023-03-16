@@ -20,4 +20,9 @@ public class ErrorDto {
     public void setErrorInfo(String errorInfo) {
         this.errorInfo = errorInfo;
     }
+
+	@Override
+	public String toString() {
+		return "ErrorDto [errorCode=" + errorCode + ", errorInfo=" + errorInfo + "]";
+	}
 }

@@ -11,4 +11,9 @@ public class DiscoverRequest {
     public void setType(String type) {
         this.type = type;
     }
+
+	@Override
+	public String toString() {
+		return "DiscoverRequest [type=" + type + "]";
+	}
 }

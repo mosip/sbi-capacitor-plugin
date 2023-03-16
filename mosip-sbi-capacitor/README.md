@@ -39,12 +39,12 @@ startActivity(options: CapacitorIntentOptions) => Promise<void>
 
 #### CapacitorIntentOptions
 
-| Prop             | Type                |
-| ---------------- | ------------------- |
-| **`url`**        | <code>string</code> |
-| **`methodType`** | <code>string</code> |
-| **`action`**     | <code>string</code> |
-| **`extraKey`**   | <code>string</code> |
-| **`extraValue`** | <code>string</code> |
+| Prop               | Type                |
+| ------------------ | ------------------- |
+| **`url`**          | <code>string</code> |
+| **`methodType`**   | <code>string</code> |
+| **`action`**       | <code>string</code> |
+| **`requestKey`**   | <code>string</code> |
+| **`requestValue`** | <code>string</code> |
 
 </docgen-api>
