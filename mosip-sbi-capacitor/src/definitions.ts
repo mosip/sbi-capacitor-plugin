@@ -2,8 +2,8 @@ export interface CapacitorIntentOptions {
   url?: string;
   methodType?: string;
   action?: string;
-  extraKey?: string;
-  extraValue?: string;    
+  requestKey?: string;
+  requestValue?: string;    
 }
 export interface MosipSbiCapacitorPlugin {
   pluginName: string;
