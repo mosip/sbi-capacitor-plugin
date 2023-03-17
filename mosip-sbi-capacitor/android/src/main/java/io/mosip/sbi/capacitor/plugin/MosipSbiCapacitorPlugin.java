@@ -5,6 +5,7 @@ import io.mosip.sbi.capacitor.plugin.model.ErrorDto;
 import io.mosip.sbi.capacitor.plugin.model.DiscoverRequest;
 import io.mosip.sbi.capacitor.plugin.model.InfoResponse;
 import io.mosip.sbi.capacitor.plugin.model.CaptureRequest;
+import io.mosip.sbi.capacitor.plugin.model.RCaptureRequest;
 import io.mosip.sbi.capacitor.plugin.model.BiometricsDto;
 import io.mosip.sbi.capacitor.plugin.model.CaptureResponse;
 import io.mosip.sbi.capacitor.plugin.model.CaptureRespDetail;
@@ -36,7 +37,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.Base64;
 
-@CapacitorPlugin(name = "MosipSbiCapacitor")
+@CapacitorPlugin(name = "MosipSbiCapacitorPlugin")
 public class MosipSbiCapacitorPlugin extends Plugin {
 
     public static final String LOG_TAG = "MosipSbiCapacitorPlugin";
@@ -93,7 +94,22 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     String requestValue = data.has("requestValue") ? data.getString("requestValue") : "";
                     Log.d(LOG_TAG, "requestValue: " + requestValue);
                     final Intent intent = new Intent(action);
-                    //CaptureRequest captureRequest = new CaptureRequest();
+                    RCaptureRequest captureRequest = objectMapper.readValue(requestValue, new TypeReference<RCaptureRequest>() {
+                    });
+                    Log.d(LOG_TAG, "RCaptureRequest: " + captureRequest);
+                    byte[] requestValueBytes = objectMapper.writeValueAsBytes(captureRequest);
+                    Log.d(LOG_TAG, "requestValue byte[]: " + requestValueBytes);
+                    intent.putExtra(requestKey, requestValueBytes);
+                    Log.d(LOG_TAG, "intent: " + intent);
+                    startActivityForResult(call, intent, "onRCaptureResult");
+                }
+                // capture
+                if (methodType.equals(SBI_METHOD_CAPTURE)) {
+                    final String requestKey = data.has("requestKey") ? data.getString("requestKey") : "";
+                    Log.d(LOG_TAG, "requestKey: " + requestKey);
+                    String requestValue = data.has("requestValue") ? data.getString("requestValue") : "";
+                    Log.d(LOG_TAG, "requestValue: " + requestValue);
+                    final Intent intent = new Intent(action);
                     CaptureRequest captureRequest = objectMapper.readValue(requestValue, new TypeReference<CaptureRequest>() {
                     });
                     Log.d(LOG_TAG, "captureRequest: " + captureRequest);
@@ -101,7 +117,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     Log.d(LOG_TAG, "requestValue byte[]: " + requestValueBytes);
                     intent.putExtra(requestKey, requestValueBytes);
                     Log.d(LOG_TAG, "intent: " + intent);
-                    startActivityForResult(call, intent, "onRCaptureResult");
+                    startActivityForResult(call, intent, "onCaptureResult");
                 }
             } catch (JsonProcessingException jsonError) {
                 call.error(jsonError.getMessage());
@@ -190,6 +206,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     ret.put(RESPONSE, infoResponse.getError().getErrorCode() + infoResponse.getError().getErrorInfo());
                     call.resolve(ret);
                 }
+
             }
             JSObject ret = new JSObject();
             ret.put(STATUS, SUCCESS);
@@ -230,6 +247,71 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     JSObject ret = new JSObject();
                     ret.put(STATUS, FAILURE);
                     ret.put(RESPONSE, "RCapture failed. Data is null or empty");
+                    call.resolve(ret);
+                } else {
+                    /* 
+                    //below code is only to debug the response recvd 
+                    Pattern pattern = Pattern.compile("(?<=\\.)(.*)(?=\\.)");
+                    Matcher matcher = pattern.matcher(bio.getData());
+                    String payload = "";
+                    if (matcher.find()) {
+                        payload = matcher.group(1);
+                        Log.d(LOG_TAG, "payload: " + payload);
+                    }
+                    byte[] decodedPayload = Base64.getUrlDecoder().decode(payload);
+                    CaptureDto captureDto = objectMapper.readValue(decodedPayload, new TypeReference<CaptureDto>(){});
+                    Log.d(LOG_TAG, "CaptureDto: " + captureDto);
+                    Matcher matcher1 = pattern.matcher(captureDto.getDigitalId());
+                    String payload1 = "";
+                    if (matcher1.find()) {
+                        payload1 = matcher1.group(1);
+                        Log.d(LOG_TAG, "payload1: " + payload1);
+                    }
+                    byte[] decodedPayload1 = Base64.getUrlDecoder().decode(payload1);
+                    DigitalId digitalId = objectMapper.readValue(decodedPayload1, new TypeReference<DigitalId>(){});
+                    Log.d(LOG_TAG, "DigitalId: " + digitalId);
+                    */
+                }
+            }
+            JSObject ret = new JSObject();
+            ret.put(STATUS, SUCCESS);
+            ret.put(RESPONSE, objectMapper.writeValueAsString(captureResponse));
+            call.success(ret);
+        } catch (Exception e) {
+            JSObject ret = new JSObject();
+            Log.d(LOG_TAG, "RCapture Exception: " + e.getMessage());
+            ret.put(STATUS, FAILURE);
+            ret.put(RESPONSE, e.getMessage());
+            call.resolve(ret);
+        }
+    }
+
+    @ActivityCallback
+    public void onCaptureResult(PluginCall call, ActivityResult result) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            Log.d(LOG_TAG, "onCaptureResult: " + result);
+            Bundle bundle = result.getData().getExtras();
+            Uri uri = bundle.getParcelable(RESPONSE);
+            InputStream inputStream = this.getActivity().getApplicationContext().getContentResolver().openInputStream(uri);
+            CaptureResponse captureResponse = objectMapper.readValue(inputStream, new TypeReference<CaptureResponse>(){});
+            for (CaptureRespDetail bio : captureResponse.getBiometrics()) {
+                //On error, even for one attribute fail the RCapture
+                if (bio.getError() != null && !"0".equals(bio.getError().getErrorCode())) {
+                    Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
+                    Log.d(LOG_TAG, "error info: " + bio.getError().getErrorInfo());
+                    JSObject ret = new JSObject();
+                    ret.put(STATUS, FAILURE);
+                    ret.put(RESPONSE, bio.getError().getErrorCode() + bio.getError().getErrorInfo());
+                    call.resolve(ret);
+                }
+                else if (bio.getData() == null || bio.getData().trim().isEmpty()) {
+                    Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
+                    Log.d(LOG_TAG, "error info: " + bio.getError().getErrorInfo());
+                    JSObject ret = new JSObject();
+                    ret.put(STATUS, FAILURE);
+                    ret.put(RESPONSE, "Capture failed. Data is null or empty");
                     call.resolve(ret);
                 } else {
                     /* 
