@@ -2,11 +2,12 @@ package io.mosip.sbi.capacitor.plugin.model;
 
 import java.util.Arrays;
 
-public class CaptureBioDetail {
+public class RCaptureBioDetail {
 
 	private String type;
 	private int count;
 	private String[] bioSubType;
+	private String[] exception;
 	private int requestedScore;
 	private String deviceId;
 
@@ -32,6 +33,14 @@ public class CaptureBioDetail {
 
 	public void setBioSubType(String[] bioSubType) {
 		this.bioSubType = bioSubType;
+	}
+
+	public String[] getException() {
+		return exception;
+	}
+
+	public void setException(String[] exception) {
+		this.exception = exception;
 	}
 
 	public int getRequestedScore() {
@@ -71,8 +80,8 @@ public class CaptureBioDetail {
 
 	@Override
 	public String toString() {
-		return "CaptureBioDetail [type=" + type + ", count=" + count + ", bioSubType=" + Arrays.toString(bioSubType)
-				+ ", requestedScore=" + requestedScore + ", deviceId="
+		return "RCaptureBioDetail [type=" + type + ", count=" + count + ", bioSubType=" + Arrays.toString(bioSubType)
+				+ ", exception=" + Arrays.toString(exception) + ", requestedScore=" + requestedScore + ", deviceId="
 				+ deviceId + ", deviceSubId=" + deviceSubId + ", previousHash=" + previousHash + "]";
 	}
 }
