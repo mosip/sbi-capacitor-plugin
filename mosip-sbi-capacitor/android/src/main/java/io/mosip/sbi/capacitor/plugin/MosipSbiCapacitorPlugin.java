@@ -24,6 +24,7 @@ import androidx.activity.result.ActivityResult;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import android.util.Log;
 import android.os.Bundle;
 import android.content.Intent;
@@ -134,7 +135,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
     @ActivityCallback
     public void onDiscoverResult(PluginCall call, ActivityResult result) {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             Log.d(LOG_TAG, "onDiscoverResult: " + result);
             Log.d(LOG_TAG, "onDiscoverResult data: " + result.getData());
@@ -179,7 +180,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
     @ActivityCallback
     public void onDeviceInfoResult(PluginCall call, ActivityResult result) {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             Log.d(LOG_TAG, "onDeviceInfoResult: " + result);
             Log.d(LOG_TAG, "onDeviceInfoResult data: " + result.getData());
@@ -206,7 +207,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     ret.put(RESPONSE, infoResponse.getError().getErrorCode() + infoResponse.getError().getErrorInfo());
                     call.resolve(ret);
                 }
-
             }
             JSObject ret = new JSObject();
             ret.put(STATUS, SUCCESS);
@@ -224,7 +224,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
     @ActivityCallback
     public void onRCaptureResult(PluginCall call, ActivityResult result) {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             Log.d(LOG_TAG, "onRCaptureResult: " + result);
             Bundle bundle = result.getData().getExtras();
@@ -236,18 +236,11 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                 if (bio.getError() != null && !"0".equals(bio.getError().getErrorCode())) {
                     Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
                     Log.d(LOG_TAG, "error info: " + bio.getError().getErrorInfo());
-                    JSObject ret = new JSObject();
-                    ret.put(STATUS, FAILURE);
-                    ret.put(RESPONSE, bio.getError().getErrorCode() + bio.getError().getErrorInfo());
-                    call.resolve(ret);
                 }
-                else if (bio.getData() == null || bio.getData().trim().isEmpty()) {
-                    Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
-                    Log.d(LOG_TAG, "error info: " + bio.getError().getErrorInfo());
-                    JSObject ret = new JSObject();
-                    ret.put(STATUS, FAILURE);
-                    ret.put(RESPONSE, "RCapture failed. Data is null or empty");
-                    call.resolve(ret);
+                else 
+                Log.d(LOG_TAG, "bio.getData(): " + bio.getData());
+                if (bio.getData() == null || bio.getData().trim().isEmpty()) {
+                    Log.d(LOG_TAG, "bio.getData(): " + bio.getData());
                 } else {
                     /* 
                     //below code is only to debug the response recvd 
@@ -289,7 +282,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
     @ActivityCallback
     public void onCaptureResult(PluginCall call, ActivityResult result) {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         try {
             Log.d(LOG_TAG, "onCaptureResult: " + result);
             Bundle bundle = result.getData().getExtras();
@@ -301,18 +294,9 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                 if (bio.getError() != null && !"0".equals(bio.getError().getErrorCode())) {
                     Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
                     Log.d(LOG_TAG, "error info: " + bio.getError().getErrorInfo());
-                    JSObject ret = new JSObject();
-                    ret.put(STATUS, FAILURE);
-                    ret.put(RESPONSE, bio.getError().getErrorCode() + bio.getError().getErrorInfo());
-                    call.resolve(ret);
                 }
                 else if (bio.getData() == null || bio.getData().trim().isEmpty()) {
-                    Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
-                    Log.d(LOG_TAG, "error info: " + bio.getError().getErrorInfo());
-                    JSObject ret = new JSObject();
-                    ret.put(STATUS, FAILURE);
-                    ret.put(RESPONSE, "Capture failed. Data is null or empty");
-                    call.resolve(ret);
+                    Log.d(LOG_TAG, "bio.getData(): " + bio.getData());
                 } else {
                     /* 
                     //below code is only to debug the response recvd 
