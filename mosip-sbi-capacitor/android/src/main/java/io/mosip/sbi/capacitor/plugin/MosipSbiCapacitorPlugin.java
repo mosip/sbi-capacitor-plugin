@@ -54,7 +54,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
     @PluginMethod
     public void startActivity(PluginCall call) {
         ObjectMapper objectMapper = new ObjectMapper();
-
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         JSObject data = call.getData();
 
         final String url = data.has("url") ? data.getString("url") : "";
