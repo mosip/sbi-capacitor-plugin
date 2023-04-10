@@ -12,7 +12,7 @@ public class DeviceDto {
     private String firmware;
     private String certification;
     private String serviceVersion;
-    private int[] deviceSubId;
+    private String[] deviceSubId;
     private String callbackId;
     private String digitalId;
     private String deviceCode;
@@ -61,11 +61,11 @@ public class DeviceDto {
         this.serviceVersion = serviceVersion;
     }
 
-    public int[] getDeviceSubId() {
+    public String[] getDeviceSubId() {
         return deviceSubId;
     }
 
-    public void setDeviceSubId(int[] deviceSubId) {
+    public void setDeviceSubId(String[] deviceSubId) {
         this.deviceSubId = deviceSubId;
     }
 
