@@ -78,7 +78,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     DiscoverRequest discoverRequest = new DiscoverRequest();
                     discoverRequest.setType(requestValue);
                     byte[] requestValueBytes = objectMapper.writeValueAsBytes(discoverRequest);
-                    Log.d(LOG_TAG, "requestValue byte[]: " + requestValueBytes);
                     intent.putExtra(requestKey, requestValueBytes);
                     Log.d(LOG_TAG, "intent: " + intent);
                     startActivityForResult(call, intent, "onDiscoverResult");
@@ -99,7 +98,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     });
                     Log.d(LOG_TAG, "RCaptureRequest: " + captureRequest);
                     byte[] requestValueBytes = objectMapper.writeValueAsBytes(captureRequest);
-                    Log.d(LOG_TAG, "requestValue byte[]: " + requestValueBytes);
                     intent.putExtra(requestKey, requestValueBytes);
                     Log.d(LOG_TAG, "intent: " + intent);
                     startActivityForResult(call, intent, "onRCaptureResult");
@@ -115,7 +113,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     });
                     Log.d(LOG_TAG, "captureRequest: " + captureRequest);
                     byte[] requestValueBytes = objectMapper.writeValueAsBytes(captureRequest);
-                    Log.d(LOG_TAG, "requestValue byte[]: " + requestValueBytes);
                     intent.putExtra(requestKey, requestValueBytes);
                     Log.d(LOG_TAG, "intent: " + intent);
                     startActivityForResult(call, intent, "onCaptureResult");
@@ -191,21 +188,13 @@ public class MosipSbiCapacitorPlugin extends Plugin {
             if (list.isEmpty()) {
                 String msg = "Device Info Failed! Invalid response";
                 Log.d(LOG_TAG, "error: " + msg);
-                JSObject ret = new JSObject();
-                ret.put(STATUS, FAILURE);
-                ret.put(RESPONSE, msg);
-                call.resolve(ret);
             }
             //InfoResponse infoResponse = list.get(0);
             for (InfoResponse infoResponse : list) {
-            Log.d(LOG_TAG, "infoResponse: " + infoResponse);
+                Log.d(LOG_TAG, "infoResponse: " + infoResponse);
                 if (infoResponse.getError() != null && !"0".equals(infoResponse.getError().getErrorCode())) {
                     Log.d(LOG_TAG, "error code: " + infoResponse.getError().getErrorCode());
                     Log.d(LOG_TAG, "error info: " + infoResponse.getError().getErrorInfo());
-                    JSObject ret = new JSObject();
-                    ret.put(STATUS, FAILURE);
-                    ret.put(RESPONSE, infoResponse.getError().getErrorCode() + infoResponse.getError().getErrorInfo());
-                    call.resolve(ret);
                 }
             }
             JSObject ret = new JSObject();
