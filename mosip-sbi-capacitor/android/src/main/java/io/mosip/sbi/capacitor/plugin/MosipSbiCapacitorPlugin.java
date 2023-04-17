@@ -9,8 +9,11 @@ import io.mosip.sbi.capacitor.plugin.model.RCaptureRequest;
 import io.mosip.sbi.capacitor.plugin.model.BiometricsDto;
 import io.mosip.sbi.capacitor.plugin.model.CaptureResponse;
 import io.mosip.sbi.capacitor.plugin.model.CaptureRespDetail;
+import io.mosip.sbi.capacitor.plugin.model.RCaptureResponse;
+import io.mosip.sbi.capacitor.plugin.model.RCaptureRespDetail;
 
 import io.mosip.sbi.capacitor.plugin.model.CaptureDto;
+import io.mosip.sbi.capacitor.plugin.model.RCaptureDto;
 import io.mosip.sbi.capacitor.plugin.model.DigitalId;
 
 import com.getcapacitor.JSObject;
@@ -219,8 +222,8 @@ public class MosipSbiCapacitorPlugin extends Plugin {
             Bundle bundle = result.getData().getExtras();
             Uri uri = bundle.getParcelable(RESPONSE);
             InputStream inputStream = this.getActivity().getApplicationContext().getContentResolver().openInputStream(uri);
-            CaptureResponse captureResponse = objectMapper.readValue(inputStream, new TypeReference<CaptureResponse>(){});
-            for (CaptureRespDetail bio : captureResponse.getBiometrics()) {
+            RCaptureResponse rCaptureResponse = objectMapper.readValue(inputStream, new TypeReference<RCaptureResponse>(){});
+            for (RCaptureRespDetail bio : rCaptureResponse.getBiometrics()) {
                 //On error, even for one attribute fail the RCapture
                 if (bio.getError() != null && !"0".equals(bio.getError().getErrorCode())) {
                     Log.d(LOG_TAG, "error code: " + bio.getError().getErrorCode());
@@ -230,8 +233,7 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                 Log.d(LOG_TAG, "bio.getData(): " + bio.getData());
                 if (bio.getData() == null || bio.getData().trim().isEmpty()) {
                     Log.d(LOG_TAG, "bio.getData(): " + bio.getData());
-                } else {
-                    /* 
+                } else { 
                     //below code is only to debug the response recvd 
                     Pattern pattern = Pattern.compile("(?<=\\.)(.*)(?=\\.)");
                     Matcher matcher = pattern.matcher(bio.getData());
@@ -241,8 +243,8 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                         Log.d(LOG_TAG, "payload: " + payload);
                     }
                     byte[] decodedPayload = Base64.getUrlDecoder().decode(payload);
-                    CaptureDto captureDto = objectMapper.readValue(decodedPayload, new TypeReference<CaptureDto>(){});
-                    Log.d(LOG_TAG, "CaptureDto: " + captureDto);
+                    RCaptureDto captureDto = objectMapper.readValue(decodedPayload, new TypeReference<RCaptureDto>(){});
+                    Log.d(LOG_TAG, "RCaptureDto: " + captureDto);
                     Matcher matcher1 = pattern.matcher(captureDto.getDigitalId());
                     String payload1 = "";
                     if (matcher1.find()) {
@@ -252,12 +254,12 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     byte[] decodedPayload1 = Base64.getUrlDecoder().decode(payload1);
                     DigitalId digitalId = objectMapper.readValue(decodedPayload1, new TypeReference<DigitalId>(){});
                     Log.d(LOG_TAG, "DigitalId: " + digitalId);
-                    */
+                    
                 }
             }
             JSObject ret = new JSObject();
             ret.put(STATUS, SUCCESS);
-            ret.put(RESPONSE, objectMapper.writeValueAsString(captureResponse));
+            ret.put(RESPONSE, objectMapper.writeValueAsString(rCaptureResponse));
             call.success(ret);
         } catch (Exception e) {
             JSObject ret = new JSObject();
@@ -287,7 +289,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                 else if (bio.getData() == null || bio.getData().trim().isEmpty()) {
                     Log.d(LOG_TAG, "bio.getData(): " + bio.getData());
                 } else {
-                    /* 
                     //below code is only to debug the response recvd 
                     Pattern pattern = Pattern.compile("(?<=\\.)(.*)(?=\\.)");
                     Matcher matcher = pattern.matcher(bio.getData());
@@ -308,7 +309,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
                     byte[] decodedPayload1 = Base64.getUrlDecoder().decode(payload1);
                     DigitalId digitalId = objectMapper.readValue(decodedPayload1, new TypeReference<DigitalId>(){});
                     Log.d(LOG_TAG, "DigitalId: " + digitalId);
-                    */
                 }
             }
             JSObject ret = new JSObject();
