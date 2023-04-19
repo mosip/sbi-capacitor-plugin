@@ -11,7 +11,7 @@ public class CaptureRespDetail {
 	private String sessionKey;
 
 	public String getSpecVersion() {
-		return thumbprint;
+		return specVersion;
 	}
 
 	public void setThumbprint(String thumbprint) {
@@ -19,7 +19,7 @@ public class CaptureRespDetail {
 	}
 
 	public String getThumbprint() {
-		return specVersion;
+		return thumbprint;
 	}
 
 	public void setSessionKey(String sessionKey) {
