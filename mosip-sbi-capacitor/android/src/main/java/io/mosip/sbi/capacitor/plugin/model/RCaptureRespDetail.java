@@ -2,32 +2,12 @@ package io.mosip.sbi.capacitor.plugin.model;
 
 import io.mosip.sbi.capacitor.plugin.model.ErrorDto;
 
-public class CaptureRespDetail {
+public class RCaptureRespDetail {
 
 	private String specVersion;
 
-	private String thumbprint;
-
-	private String sessionKey;
-
 	public String getSpecVersion() {
 		return specVersion;
-	}
-
-	public void setThumbprint(String thumbprint) {
-		this.thumbprint = thumbprint;
-	}
-
-	public String getThumbprint() {
-		return thumbprint;
-	}
-
-	public void setSessionKey(String sessionKey) {
-		this.sessionKey = sessionKey;
-	}
-
-	public String getSessionKey() {
-		return sessionKey;
 	}
 
 	public void setSpecVersion(String specVersion) {
@@ -62,10 +42,10 @@ public class CaptureRespDetail {
 	private String hash;
 	private ErrorDto error;
 
-	public CaptureRespDetail() {
+	public RCaptureRespDetail() {
 	}
 
-	public CaptureRespDetail(String specVersion, String data, String hash, ErrorDto error) {
+	public RCaptureRespDetail(String specVersion, String data, String hash, ErrorDto error) {
 		this.specVersion = specVersion;
 		this.data = data;
 		this.hash = hash;
@@ -74,7 +54,7 @@ public class CaptureRespDetail {
 
 	@Override
 	public String toString() {
-		return "CaptureRespDetail [specVersion=" + specVersion + ", data=" + data + ", hash="  + hash + ", sessionKey=" + sessionKey  + ", thumbprint=" + thumbprint + ", error="
+		return "RCaptureRespDetail [specVersion=" + specVersion + ", data=" + data + ", hash=" + hash + ", error="
 				+ error + "]";
 	}
 

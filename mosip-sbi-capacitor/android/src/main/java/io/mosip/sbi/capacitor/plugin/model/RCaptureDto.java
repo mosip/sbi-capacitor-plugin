@@ -1,6 +1,6 @@
 package io.mosip.sbi.capacitor.plugin.model;
 
-public class CaptureDto {
+public class RCaptureDto {
 
 	private String digitalId;
 	private String bioType;
@@ -10,19 +10,10 @@ public class CaptureDto {
 	private String purpose;
 	private String env;
 	private String bioValue;
-	private String domainUri;
 	private String transactionId;
 	private String timestamp;
 	private String requestedScore;
 	private float qualityScore;
-
-	public String getDomainUri() {
-		return domainUri;
-	}
-
-	public void setDomainUri(String domainUri) {
-		this.domainUri = domainUri;
-	}
 
 	public String getDigitalId() {
 		return digitalId;
@@ -122,9 +113,9 @@ public class CaptureDto {
 
 	@Override
 	public String toString() {
-		return "CaptureDto [digitalId=" + digitalId + ", bioType=" + bioType + ", deviceCode=" + deviceCode
+		return "RCaptureDto [digitalId=" + digitalId + ", bioType=" + bioType + ", deviceCode=" + deviceCode
 				+ ", deviceServiceVersion=" + deviceServiceVersion + ", bioSubType=" + bioSubType + ", purpose="
-				+ purpose + ", env=" + env + ", domainUri=" + domainUri + ", transactionId=" + transactionId
+				+ purpose + ", env=" + env + ", transactionId=" + transactionId
 				+ ", timestamp=" + timestamp + ", requestedScore=" + requestedScore + ", qualityScore=" + qualityScore
 				+ "]";
 	}

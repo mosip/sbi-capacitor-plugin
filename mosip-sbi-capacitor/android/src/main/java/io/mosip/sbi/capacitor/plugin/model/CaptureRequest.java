@@ -10,7 +10,15 @@ public class CaptureRequest {
     private int timeout;
     private String captureTime;
     private String transactionId;
+	private String domainUri;
     private List<CaptureBioDetail> bio;
+
+	public String getDomainUri() {
+		return domainUri;
+	}
+	public void setDomainUri(String domainUri) {
+		this.domainUri = domainUri;
+	}
 
 	public String getEnv() {
 		return env;
@@ -57,6 +65,6 @@ public class CaptureRequest {
 	@Override
 	public String toString() {
 		return "CaptureRequest [env=" + env + ", purpose=" + purpose + ", specVersion=" + specVersion + ", timeout="
-				+ timeout + ", captureTime=" + captureTime + ", transactionId=" + transactionId + ", bio=" + bio + "]";
+				+ timeout + ", domainUri=" + domainUri + ", captureTime=" + captureTime + ", transactionId=" + transactionId + ", bio=" + bio + "]";
 	}
 }
