@@ -1,6 +1,6 @@
 {
   "name": "mosip-sbi-capacitor-plugin",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "Capacitor plugin to use Android Intent with SBI",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -30,7 +30,7 @@
   ],
   "scripts": {
     "verify": "npm run verify:android",
-    "verify:android": "cd android && gradlew clean build test && cd ..",
+    "verify:android": "cd android && ./gradlew clean build test && cd ..",
     "lint": "npm run eslint && npm run prettier -- --check && npm run swiftlint -- lint",
     "fmt": "npm run eslint -- --fix && npm run prettier -- --write && npm run swiftlint -- --fix --format",
     "eslint": "eslint . --ext ts",

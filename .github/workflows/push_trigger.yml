@@ -1,0 +1,32 @@
+name: Publish to NPM
+on:
+  push:
+    branches:
+      - develop
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: npm Install
+        run: cd mosip-sbi-capacitor && npm install
+      - name: Build APK
+        working-directory: ./mosip-sbi-capacitor/android
+        run: |
+          sed -i -e 's/\r$//' ./gradlew
+          chmod +x ./gradlew
+          ./gradlew build
+      - name: Change to root directory
+        run: cd ../
+      - name: Build
+        run: cd mosip-sbi-capacitor && npm run verify
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          package_path: './mosip-sbi-capacitor'
+          registry-url: 'https://registry.npmjs.org/'
+      - name: Publish package
+        run: cd mosip-sbi-capacitor && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
