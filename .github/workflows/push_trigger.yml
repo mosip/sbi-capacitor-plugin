@@ -62,4 +62,4 @@ jobs:
           cd mosip-sbi-capacitor
           cd android
           chmod +x gradlew
-          ./gradlew build test testDebugUnitTestCoverage sonarqube --info --warning-mode all
+          ./gradlew build sonar --info --warning-mode all
