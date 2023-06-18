@@ -64,6 +64,28 @@ jobs:
           chmod +x gradlew
           ./gradlew build sonar --info --warning-mode all
 
+name: Tagging of repos
+env:
+  tag: v1.2.3
+on:
+  push:
+    inputs:
+      tag:
+        description: 'Tag to be published'
+        required: true
+        default: 'v1.2.3'
+        type: string
+      body:
+        description: 'Release body message'
+        required: true
+        default: 'Changes in this Release'
+        type: string
+      pre-release:
+        description: 'Pre-release? True/False'
+        required: true
+        default: False
+        type: string
+
   build-tagging-repo:
     name: Create Release
     runs-on: ubuntu-latest
@@ -81,4 +103,4 @@ jobs:
           body: |
             ${{ github.event.inputs.body }}
           draft: false
-          release: ${{fromJSON(github.event.inputs.pre-release)}}
+          prerelease: ${{fromJSON(github.event.inputs.pre-release)}}
