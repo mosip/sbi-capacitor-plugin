@@ -81,4 +81,4 @@ jobs:
           body: |
             ${{ github.event.inputs.body }}
           draft: false
-          prerelease: ${{fromJSON(github.event.inputs.pre-release)}}
+          release: ${{fromJSON(github.event.inputs.pre-release)}}
