@@ -63,3 +63,13 @@ jobs:
           cd android
           chmod +x gradlew
           ./gradlew build sonar --info --warning-mode all
+
+      - name: Tag repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Set the tag version
+          TAG_VERSION=v1.2.4
+          # Tag the repository
+          git tag $TAG_VERSION
+          git push origin $TAG_VERSION
