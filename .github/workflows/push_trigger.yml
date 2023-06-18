@@ -64,43 +64,51 @@ jobs:
           chmod +x gradlew
           ./gradlew build sonar --info --warning-mode all
 
-name: Tagging of repos
 env:
-  tag: v1.2.3
-on:
-  push:
-    inputs:
-      tag:
-        description: 'Tag to be published'
-        required: true
-        default: 'v1.2.3'
-        type: string
-      body:
-        description: 'Release body message'
-        required: true
-        default: 'Changes in this Release'
-        type: string
-      pre-release:
-        description: 'Pre-release? True/False'
-        required: true
-        default: False
-        type: string
+  tag:
+    description: 'Tag to be published'
+    required: true
+    default: 'v1.2.3'
+    type: string
+  body:
+    description: 'Release body message'
+    required: true
+    default: 'Changes in this Release'
+    type: string
+  pre-release:
+    description: 'Pre-release? True/False'
+    required: true
+    default: 'false'
+    type: string
 
-  build-tagging-repo:
-    name: Create Release
+  build_publish_tag:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to Nexus
+        run: npm publish --registry https://your-nexus-registry-url/repository/npm/
+
+      - name: Tag repository
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.event.inputs.tag }}
-          release_name: ${{ github.event.inputs.tag }}
-          body: |
-            ${{ github.event.inputs.body }}
+          tag_name: ${{ env.tag }}
+          release_name: ${{ env.tag }}
+          body: ${{ env.body }}
           draft: false
-          prerelease: ${{fromJSON(github.event.inputs.pre-release)}}
+          prerelease: ${{ env.pre-release }}
