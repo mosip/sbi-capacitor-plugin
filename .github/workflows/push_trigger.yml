@@ -64,22 +64,21 @@ jobs:
           chmod +x gradlew
           ./gradlew build sonar --info --warning-mode all
 
-  build_publish_tag:
+  tag-repo:
+    name: Create Release
     runs-on: ubuntu-latest
-
-    needs: build_and_publish
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Tag repository
+      - name: Create Release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ env.tag }}
-          release_name: ${{ env.tag }}
-          body: ${{ env.body }}
+          tag_name: ${{ github.event.inputs.tag }}
+          release_name: ${{ github.event.inputs.tag }}
+          body: |
+            ${{ github.event.inputs.body }}
           draft: false
-          prerelease: ${{ env.pre-release }}
+          prerelease: ${{fromJSON(github.event.inputs.pre-release)}}
