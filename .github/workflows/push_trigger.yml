@@ -64,43 +64,14 @@ jobs:
           chmod +x gradlew
           ./gradlew build sonar --info --warning-mode all
 
-env:
-  tag:
-    description: 'Tag to be published'
-    required: true
-    default: 'v1.2.3'
-    type: string
-  body:
-    description: 'Release body message'
-    required: true
-    default: 'Changes in this Release'
-    type: string
-  pre-release:
-    description: 'Pre-release? True/False'
-    required: true
-    default: 'false'
-    type: string
-
   build_publish_tag:
     runs-on: ubuntu-latest
+
+    needs: build_and_publish
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 14
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build
-
-      - name: Publish to Nexus
-        run: npm publish --registry https://your-nexus-registry-url/repository/npm/
 
       - name: Tag repository
         uses: actions/create-release@v1
