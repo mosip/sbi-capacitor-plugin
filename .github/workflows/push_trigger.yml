@@ -4,7 +4,7 @@ on:
     branches:
       - develop
 jobs:
-  build-and-publish:
+  build-publish-tag:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,6 +30,14 @@ jobs:
         run: cd mosip-sbi-capacitor && npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+      - name: Tag
+        run: |
+          pwd
+          cd mosip-sbi-capacitor
+          VERSION=$(grep -o '"version": "[^"]*' package.json | sed 's/"version": "//') #Replace with the versioning strategy you prefer
+          VERSION="v${VERSION}_npm"
+          git tag $VERSION
+          git push origin $VERSION
   build:
     name: sonar-analysis
     runs-on: ubuntu-latest
