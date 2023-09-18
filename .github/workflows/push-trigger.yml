@@ -41,7 +41,7 @@ jobs:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
   sonar-analysis-sbi-capacitor-plugin:
-    if: "{{ github.event_name != 'pull_request' }}"
+    if: "${{ github.event_name != 'pull_request' }}"
     needs: build-mosip-sbi-capacitor
     uses: mosip/kattu/.github/workflows/gradlew-sonar-analysis.yml@master
     with:
