@@ -14,7 +14,7 @@ on:
   push:
     branches:
       - '!release-branch'
-      - release-1*
+      - release*
       - master
       - 1.*
       - develop*
@@ -23,9 +23,10 @@ jobs:
   build-mosip-sbi-capacitor:
     uses: mosip/kattu/.github/workflows/npm-andriod-build.yml@master
     with:
-      SERVICE_LOCATION: ./mosip-sbi-capacitor/android
+      SERVICE_LOCATION: 'mosip-sbi-capacitor'
+      ANDROID_LOCATION: 'android'
       BUILD_ARTIFACT: mosip-sbi-capacitor
-      GRADLEW_ARGS: 'build'
+      GRADLEW_ARGS: 'clean build test'
     secrets:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
 
@@ -34,8 +35,9 @@ jobs:
     needs: build-mosip-sbi-capacitor
     uses: mosip/kattu/.github/workflows/npm-publish-to-npm-registry.yml@master
     with:
-      SERVICE_LOCATION: ./mosip-sbi-capacitor/android
-      GRADLEW_ARGS: 'build'
+      SERVICE_LOCATION: 'mosip-sbi-capacitor'
+      ANDROID_LOCATION: 'android'
+      GRADLEW_ARGS: 'clean build test'
     secrets:
       NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
@@ -45,7 +47,8 @@ jobs:
     needs: build-mosip-sbi-capacitor
     uses: mosip/kattu/.github/workflows/gradlew-sonar-analysis.yml@master
     with:
-      SERVICE_LOCATION: './mosip-sbi-capacitor/android'
+      SERVICE_LOCATION: 'mosip-sbi-capacitor'
+      ANDROID_LOCATION: 'android'
       SONAR_URL: 'https://sonarcloud.io'
       PROJECT_KEY: "mosip_${{ github.event.repository.name }}"
       PROJECT_NAME: "${{ github.event.repository.name }}"
