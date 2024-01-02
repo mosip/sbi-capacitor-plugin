@@ -156,10 +156,6 @@ public class MosipSbiCapacitorPlugin extends Plugin {
             if (deviceDto.getError() != null && !"0".equals(deviceDto.getError().getErrorCode())) {
                 Log.d(LOG_TAG, "error code: " + deviceDto.getError().getErrorCode());
                 Log.d(LOG_TAG, "error info: " + deviceDto.getError().getErrorInfo());
-                JSObject ret = new JSObject();
-                ret.put(STATUS, FAILURE);
-                ret.put(RESPONSE, deviceDto.getError().getErrorCode() + deviceDto.getError().getErrorInfo());
-                call.resolve(ret);
             }
             String callbackId = deviceDto.getCallbackId();
             Log.d(LOG_TAG, "callbackId: " + callbackId);
