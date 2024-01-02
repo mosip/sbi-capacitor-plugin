@@ -21,7 +21,7 @@ on:
       - MOSIP*
 jobs:
   build-mosip-sbi-capacitor:
-    uses: mosip/kattu/.github/workflows/npm-andriod-build.yml@master
+    uses: mosip/kattu/.github/workflows/npm-android-build.yml@master
     with:
       SERVICE_LOCATION: 'mosip-sbi-capacitor'
       ANDROID_LOCATION: 'android'
