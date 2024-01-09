@@ -9,7 +9,6 @@ public class DeviceDto {
 
     private String deviceId;
     private String deviceStatus;
-    private String firmware;
     private String certification;
     private String serviceVersion;
     private String[] deviceSubId;
@@ -17,7 +16,6 @@ public class DeviceDto {
     private String digitalId;
     private String deviceCode;
     private String[] specVersion;
-    private String env;
     private String purpose;
     private ErrorDto error;
 
@@ -35,14 +33,6 @@ public class DeviceDto {
 
     public void setDeviceStatus(String deviceStatus) {
         this.deviceStatus = deviceStatus;
-    }
-
-    public String getFirmware() {
-        return firmware;
-    }
-
-    public void setFirmware(String firmware) {
-        this.firmware = firmware;
     }
 
     public String getCertification() {
@@ -101,14 +91,6 @@ public class DeviceDto {
         this.specVersion = specVersion;
     }
 
-    public String getEnv() {
-        return env;
-    }
-
-    public void setEnv(String env) {
-        this.env = env;
-    }
-
     public String getPurpose() {
         return purpose;
     }
@@ -127,10 +109,10 @@ public class DeviceDto {
 
     @Override
 	public String toString() {
-		return "DeviceDto [deviceId=" + deviceId + ", deviceStatus=" + deviceStatus + ", firmware=" + firmware
+		return "DeviceDto [deviceId=" + deviceId + ", deviceStatus=" + deviceStatus 
 				+ ", certification=" + certification + ", serviceVersion=" + serviceVersion + ", deviceSubId="
 				+ Arrays.toString(deviceSubId) + ", callbackId=" + callbackId + ", digitalId=" + digitalId
-				+ ", deviceCode=" + deviceCode + ", specVersion=" + Arrays.toString(specVersion) + ", env=" + env
+				+ ", deviceCode=" + deviceCode + ", specVersion=" + Arrays.toString(specVersion) 
 				+ ", purpose=" + purpose + ", error=" + error + "]";
 	}
 }
